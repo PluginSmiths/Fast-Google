@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'maven-publish'
+}
+
+group = 'net.ovonsame'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    implementation 'com.google.apis:google-api-services-calendar:v3-rev20250115-2.0.0'
+    implementation 'com.google.apis:google-api-services-youtubereporting:v1-rev20230704-2.0.0'
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev20250128-2.0.0'
+    implementation 'com.google.apis:google-api-services-youtubeAnalytics:v2-rev20230704-2.0.0'
+    implementation 'com.google.apis:google-api-services-workloadmanager:v1-rev20250120-2.0.0'
+    implementation 'com.google.apis:google-api-services-solar:v1-rev20241211-2.0.0'
+    implementation 'com.google.apis:google-api-services-streetviewpublish:v1-rev20240224-2.0.0'
+    implementation 'com.google.apis:google-api-services-safebrowsing:v5-rev20240505-2.0.0'
+    implementation 'com.google.apis:google-api-services-oracledatabase:v1-rev20241210-2.0.0'
+    implementation 'com.google.apis:google-api-services-walletobjects:v1-rev20241203-2.0.0'
+    implementation 'com.google.apis:google-api-services-drive:v3-rev20250122-2.0.0'
+    implementation 'com.google.apis:google-api-services-translate:v2-rev20170525-2.0.0'
+    implementation 'com.google.apis:google-api-services-chat:v1-rev20250126-2.0.0'
+    implementation 'com.google.apis:google-api-services-gmail:v1-rev20240520-2.0.0'
+    implementation 'com.google.apis:google-api-services-texttospeech:v1-rev20250114-2.0.0'
+    implementation 'com.google.apis:google-api-services-speech:v1-rev20241111-2.0.0'
+    implementation 'com.google.apis:google-api-services-compute:v1-rev20250119-2.0.0'
+    implementation 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
+}
