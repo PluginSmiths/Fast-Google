@@ -11,6 +11,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -33,6 +34,8 @@ dependencies {
     implementation 'com.google.apis:google-api-services-speech:v1-rev20241111-2.0.0'
     implementation 'com.google.apis:google-api-services-compute:v1-rev20250119-2.0.0'
     implementation 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
+    implementation 'com.sun.mail:javax.mail:1.6.2'
+    implementation 'com.google.guava:guava:32.1.2-jre'
 }
 
 processResources {
