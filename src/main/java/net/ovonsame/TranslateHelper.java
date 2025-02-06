@@ -6,16 +6,19 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.translate.Translate;
-import com.google.api.services.translate.model.TranslationsListResponse;
-import com.google.api.services.translate.model.TranslationsResource;
+import com.google.api.services.translate.model.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.api.services.translate.TranslateRequestInitializer;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 public class TranslateHelper {
     @SuppressWarnings("unused")
-    public static String translate(String text, String lang) {
+    public static String translate(@NonNull String text, @NonNull String lang) {
         HttpTransport httpTransport = new NetHttpTransport();
         JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
         HttpRequestInitializer requestInitializer = new FastHttpRequestInitializer();
@@ -38,5 +41,31 @@ public class TranslateHelper {
             e.printStackTrace();
         }
         return text;
+    }
+    @SuppressWarnings("unused")
+    public static String getLanguage(@NonNull String text) {
+        try {
+            String api = "";
+
+            HttpTransport httpTransport = new NetHttpTransport();
+            JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+
+            Translate translateService = new Translate.Builder(httpTransport, jsonFactory, null)
+                    .setApplicationName("FastGoogle")
+                    .setTranslateRequestInitializer(new TranslateRequestInitializer(api))
+                    .build();
+            ArrayList<String> lang = new ArrayList<>();
+            lang.add(text);
+
+            DetectionsListResponse detections = translateService.detections().detect(new DetectLanguageRequest()
+                    .setQ(lang))
+                    .execute();
+            List<List<DetectionsResourceItems>> items = detections.getDetections();
+            return items.getFirst().getFirst().getIsReliable() ? items.getFirst().getFirst().getLanguage() : null;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

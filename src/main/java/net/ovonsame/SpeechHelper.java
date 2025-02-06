@@ -17,13 +17,15 @@ import java.util.Base64;
 import com.google.api.services.speech.v1.Speech;
 import com.google.api.services.speech.v1.SpeechRequestInitializer;
 import com.google.api.services.speech.v1.model.*;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import java.io.FileInputStream;
 import java.util.Optional;
 
 public class SpeechHelper {
     private static final String API_KEY = "YOUR_API_KEY"; // Укажите ваш API-ключ
     @SuppressWarnings("unused")
-    public static File textToSpeech(String text, String languageCode, String gender, double speekingRate, double pitch) {
+    public static File textToSpeech(@NonNull String text, @NonNull String languageCode, @NonNull String gender, double speekingRate, double pitch) {
         try {
             HttpTransport httpTransport = new NetHttpTransport();
             JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
@@ -66,11 +68,8 @@ public class SpeechHelper {
         return new File("FastGoogle" + System.currentTimeMillis() + ".ogg");
     }
     @SuppressWarnings("unused")
-    public static Optional<String> speechToText(File audioFile, String languageCode) {
+    public static Optional<String> speechToText(@NonNull File audioFile, @NonNull String languageCode) {
         try {
-            if (!audioFile.exists()) {
-                throw new IOException("Файл не найден: " + audioFile.getAbsolutePath());
-            }
 
             HttpTransport httpTransport = new NetHttpTransport();
             JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
