@@ -34,3 +34,10 @@ dependencies {
     implementation 'com.google.apis:google-api-services-compute:v1-rev20250119-2.0.0'
     implementation 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
 }
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from("src/main/resources") {
+        include("**/*")
+    }
+}
