@@ -49,8 +49,9 @@ public class TranslateHelper {
 
             HttpTransport httpTransport = new NetHttpTransport();
             JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
+            HttpRequestInitializer requestInitializer = new FastHttpRequestInitializer();
 
-            Translate translateService = new Translate.Builder(httpTransport, jsonFactory, null)
+            Translate translateService = new Translate.Builder(httpTransport, jsonFactory, requestInitializer)
                     .setApplicationName("FastGoogle")
                     .setTranslateRequestInitializer(new TranslateRequestInitializer(api))
                     .build();
