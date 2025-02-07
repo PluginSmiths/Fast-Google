@@ -1,10 +1,5 @@
-package net.ovonsame;
+package net.ovonsame.Helpers;
 
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.texttospeech.v1.Texttospeech;
 import com.google.api.services.texttospeech.v1.TexttospeechRequestInitializer;
 import com.google.api.services.texttospeech.v1.model.*;
@@ -17,23 +12,19 @@ import java.util.Base64;
 import com.google.api.services.speech.v1.Speech;
 import com.google.api.services.speech.v1.SpeechRequestInitializer;
 import com.google.api.services.speech.v1.model.*;
+import net.ovonsame.Account;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.FileInputStream;
 import java.util.Optional;
 
 public class SpeechHelper {
-    private static final String API_KEY = "YOUR_API_KEY"; // Укажите ваш API-ключ
     @SuppressWarnings("unused")
-    public static File textToSpeech(@NonNull String text, @NonNull String languageCode, @NonNull String gender, double speekingRate, double pitch) {
+    public static File textToSpeech(@NonNull String text, @NonNull String languageCode, @NonNull String gender, double speekingRate, double pitch, @NonNull Account account) {
         try {
-            HttpTransport httpTransport = new NetHttpTransport();
-            JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
-            HttpRequestInitializer requestInitializer = new FastHttpRequestInitializer();
-
-            Texttospeech speechService = new Texttospeech.Builder(httpTransport, jsonFactory, requestInitializer)
-                    .setApplicationName("FastGoogle")
-                    .setTexttospeechRequestInitializer(new TexttospeechRequestInitializer(API_KEY))
+            Texttospeech speechService = new Texttospeech.Builder(account.getHttpTransport(), account.getJsonFactory(), account.getRequestInitializer())
+                    .setApplicationName(account.getApplicationName())
+                    .setTexttospeechRequestInitializer(new TexttospeechRequestInitializer(account.getKey()))
                     .build();
 
             SynthesisInput input = new SynthesisInput().setText(text);
@@ -55,7 +46,7 @@ public class SpeechHelper {
             SynthesizeSpeechResponse response = speechService.text().synthesize(request).execute();
 
             byte[] audioBytes = Base64.getDecoder().decode(response.getAudioContent());
-            File outputFile = new File("FastGoogle" + System.currentTimeMillis() + ".ogg");
+            File outputFile = new File(account.getApplicationName() + System.currentTimeMillis() + ".ogg");
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
                 out.write(audioBytes);
             }
@@ -65,19 +56,14 @@ public class SpeechHelper {
             e.printStackTrace();
         }
 
-        return new File("FastGoogle" + System.currentTimeMillis() + ".ogg");
+        return new File(account.getApplicationName() + System.currentTimeMillis() + ".ogg");
     }
     @SuppressWarnings("unused")
-    public static Optional<String> speechToText(@NonNull File audioFile, @NonNull String languageCode) {
+    public static Optional<String> speechToText(@NonNull File audioFile, @NonNull String languageCode, @NonNull Account account) {
         try {
-
-            HttpTransport httpTransport = new NetHttpTransport();
-            JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
-            HttpRequestInitializer requestInitializer = new FastHttpRequestInitializer();
-
-            Speech speechService = new Speech.Builder(httpTransport, jsonFactory, requestInitializer)
+            Speech speechService = new Speech.Builder(account.getHttpTransport(), account.getJsonFactory(), account.getRequestInitializer())
                     .setApplicationName("FastGoogle")
-                    .setSpeechRequestInitializer(new SpeechRequestInitializer(API_KEY))
+                    .setSpeechRequestInitializer(new SpeechRequestInitializer(account.getKey()))
                     .build();
 
             byte[] audioBytes;
